@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10251f">
+  <title>Escala | Bar do Jaba 1</title>
+  <style>
+    :root{color-scheme:light;--ink:#17211e;--muted:#64736d;--green:#173c30;--green2:#285844;--cream:#f5f4ee;--line:#e2e6df;--gold:#e3ad48;--white:#fff}
+    *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+    header{background:var(--green);color:white;padding:20px 18px 17px}.head{max-width:720px;margin:auto;display:flex;align-items:center;gap:12px}.brand{font-size:30px}.head h1{font-size:19px;margin:0;font-weight:750}.head p{margin:3px 0 0;color:#c9d9d0;font-size:12px;letter-spacing:.04em}
+    main{max-width:720px;margin:0 auto;padding:18px 14px 40px}.panel{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 5px 18px #173c3009}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;background:#e9ece6;border-radius:13px;padding:4px;margin-bottom:14px}.tab{border:0;background:transparent;border-radius:10px;padding:11px 8px;font-weight:700;color:var(--muted);font-size:13px}.tab.active{background:white;color:var(--green);box-shadow:0 2px 8px #173c301c}
+    .label{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.09em;text-transform:uppercase;margin:0 0 9px}.chips{display:flex;gap:7px;overflow-x:auto;padding:1px 1px 5px;scrollbar-width:thin}.chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 13px;font-weight:750;color:#55645d}.chip.active{background:var(--green);border-color:var(--green);color:white}
+    .daygrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{padding:10px 2px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#596760;font-size:12px;font-weight:800}.day.active{background:#f9e9c9;border-color:var(--gold);color:#4c3510}
+    .date{text-align:center;color:var(--muted);font-size:13px;margin-top:10px}.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}.section-title h2{font-size:17px;margin:0;color:var(--green)}.source{font-size:11px;color:var(--muted)}
+    .schedule-image{display:block;width:100%;height:auto;border:1px solid #d9ded8;border-radius:8px;background:white}.hint{background:#f5f7f3;border:1px solid var(--line);color:#58675f;padding:11px 12px;border-radius:12px;font-size:12px;margin-top:12px}
+    details{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}summary{font-weight:750;color:var(--green);cursor:pointer;font-size:13px}.wide-wrap{margin-top:12px;overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff;max-height:70vh}.wide-wrap img{display:block;width:1050px;max-width:none;height:auto}
+    .hidden{display:none!important}footer{text-align:center;color:#77847d;font-size:11px;padding:0 18px 24px}.off-image{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:8px}.off-table-note{font-size:12px;color:var(--muted);margin:12px 0 0}
+    @media(min-width:600px){main{padding-top:24px}.panel{padding:20px}.day{font-size:13px}}
+  </style>
+</head>
+<body>
+  <header><div class="head"><div class="brand" aria-hidden="true">🍖</div><div><h1>Bar do Jaba 1</h1><p>ESCALA DA EQUIPE · CICLO DE 5 SEMANAS</p></div></div></header>
+  <main>
+    <div class="tabs"><button class="tab active" id="tabDay" type="button">Escala por dia</button><button class="tab" id="tabOff" type="button">Folgas da equipe</button></div>
+    <section id="viewDay">
+      <div class="panel"><p class="label">Escolha a semana</p><div class="chips" id="weeks"></div></div>
+      <div class="panel"><p class="label">Escolha o dia</p><div class="daygrid" id="days"></div><div class="date" id="dateLabel"></div></div>
+      <div class="panel"><div class="section-title"><h2 id="dayHeading">Segunda-feira</h2><span class="source" id="weekLabel">Semana 1</span></div><img id="dayImage" class="schedule-image" alt="Escala oficial do dia, com turnos da manhã e da noite e funcionários de folga"><div class="hint">Este recorte reproduz a escala do PDF: azul indica manhã, laranja indica noite e cinza indica folga. Células amarelas marcam ajustes indicados na planilha.</div><details><summary>Ver a semana inteira</summary><div class="wide-wrap"><img id="weekImage" alt="Escala completa da semana"></div></details></div>
+    </section>
+    <section id="viewOff" class="hidden"><div class="panel"><div class="section-title"><h2>Folgas da equipe</h2><span class="source">Tabela de referência</span></div><div class="wide-wrap" style="max-height:75vh"><img class="off-image" id="offImage" alt="Tabela de primeira e segunda folgas e rodízio de domingos"></div><p class="off-table-note">A tabela acima mostra a primeira e a segunda folga de cada pessoa e o rodízio de domingos. Para confirmar uma semana específica, consulte também a escala semanal na aba “Escala por dia”.</p></div></section>
+  </main>
+  <footer>Bar do Jaba 1 · Consulte sempre a semana e o dia selecionados.</footer>
+  <script>
+    const DAYS=['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado','Domingo'];
+    const SHORT=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+    const dayImages=[
+      ['assets/week-1-day-0.jpg'0__,'assets/week-1-day-0.jpg'1__,'assets/week-1-day-0.jpg'2__,'assets/week-1-day-0.jpg'3__,'assets/week-1-day-0.jpg'4__,'assets/week-1-day-0.jpg'5__,'assets/week-1-day-0.jpg'6__],
+      ['assets/week-2-day-0.jpg'0__,'assets/week-2-day-0.jpg'1__,'assets/week-2-day-0.jpg'2__,'assets/week-2-day-0.jpg'3__,'assets/week-2-day-0.jpg'4__,'assets/week-2-day-0.jpg'5__,'assets/week-2-day-0.jpg'6__],
+      ['assets/week-3-day-0.jpg'0__,'assets/week-3-day-0.jpg'1__,'assets/week-3-day-0.jpg'2__,'assets/week-3-day-0.jpg'3__,'assets/week-3-day-0.jpg'4__,'assets/week-3-day-0.jpg'5__,'assets/week-3-day-0.jpg'6__],
+      ['assets/week-4-day-0.jpg'0__,'assets/week-4-day-0.jpg'1__,'assets/week-4-day-0.jpg'2__,'assets/week-4-day-0.jpg'3__,'assets/week-4-day-0.jpg'4__,'assets/week-4-day-0.jpg'5__,'assets/week-4-day-0.jpg'6__],
+      ['assets/week-5-day-0.jpg'0__,'assets/week-5-day-0.jpg'1__,'assets/week-5-day-0.jpg'2__,'assets/week-5-day-0.jpg'3__,'assets/week-5-day-0.jpg'4__,'assets/week-5-day-0.jpg'5__,'assets/week-5-day-0.jpg'6__]
+    ];
+    const weekImages=['assets/week-1.jpg'1__,'assets/week-1.jpg'2__,'assets/week-1.jpg'3__,'assets/week-1.jpg'4__,'assets/week-1.jpg'5__];
+    const offImage='assets/folgas.jpg';
+    let week=0,day=0;
+    const start=new Date(2026,11,14);
+    const weeks=document.getElementById('weeks'),days=document.getElementById('days');
+    function fmt(d){return new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}).format(d)}
+    function render(){
+      weeks.innerHTML='';for(let i=0;i<5;i++){const b=document.createElement('button');b.className='chip'+(week===i?' active':'');b.textContent=`Semana ${i+1}`;b.onclick=()=>{week=i;render()};weeks.appendChild(b)}
+      days.innerHTML='';for(let i=0;i<7;i++){const b=document.createElement('button');b.className='day'+(day===i?' active':'');b.textContent=SHORT[i];b.setAttribute('aria-label',DAYS[i]);b.onclick=()=>{day=i;render()};days.appendChild(b)}
+      const date=new Date(start);date.setDate(start.getDate()+week*7+day);
+      document.getElementById('dayHeading').textContent=DAYS[day];document.getElementById('weekLabel').textContent=`Semana ${week+1}`;document.getElementById('dateLabel').textContent=`${DAYS[day]}, ${fmt(date)}`;
+      document.getElementById('dayImage').src=dayImages[week][day];document.getElementById('weekImage').src=weekImages[week];
+    }
+    document.getElementById('offImage').src=offImage;
+    document.getElementById('tabDay').onclick=()=>{document.getElementById('viewDay').classList.remove('hidden');document.getElementById('viewOff').classList.add('hidden');document.getElementById('tabDay').classList.add('active');document.getElementById('tabOff').classList.remove('active')};
+    document.getElementById('tabOff').onclick=()=>{document.getElementById('viewOff').classList.remove('hidden');document.getElementById('viewDay').classList.add('hidden');document.getElementById('tabOff').classList.add('active');document.getElementById('tabDay').classList.remove('active')};
+    render();
+  </script>
+</body>
+</html>
+
+
